@@ -1,0 +1,1037 @@
+stackbitVersion: ~0.3.0
+dataDir: ''
+pagesDir: ''
+ssgName: hexo
+cmsName: git
+nodeVersion: 12
+models:
+  page_1:
+    type: page
+    label: Page 1
+    match: '**/*'
+    fields: []
+  vcpkg:
+    type: data
+    label: Vcpkg
+    file: build_msvc/vcpkg.json
+    fields:
+      - type: string
+        name: name
+        label: Name
+      - type: string
+        name: version-string
+        label: Version String
+  gitian_descriptor:
+    type: data
+    label: Gitian Descriptor
+    folder: contrib/gitian-descriptors
+    fields:
+      - type: string
+        name: name
+        label: Name
+      - type: boolean
+        name: enable_cache
+        label: Enable Cache
+      - type: string
+        name: distro
+        label: Distro
+      - type: list
+        name: suites
+        label: Suites
+        items:
+          type: string
+      - type: list
+        name: architectures
+        label: Architectures
+        items:
+          type: string
+      - type: list
+        name: packages
+        label: Packages
+        items:
+          type: string
+      - type: list
+        name: remotes
+        label: Remotes
+        items:
+          type: object
+          fields:
+            - type: string
+              name: url
+              label: Url
+            - type: string
+              name: dir
+              label: Dir
+            - type: string
+              name: commit
+              label: Commit
+      - type: list
+        name: files
+        label: Files
+        items:
+          type: string
+      - type: markdown
+        name: script
+        label: Script
+  data_1:
+    type: data
+    label: Data 1
+    folder: ''
+    fields:
+      - type: string
+        name: txid
+        label: Txid
+      - type: string
+        name: hash
+        label: Hash
+      - type: number
+        name: version
+        label: Version
+        subtype: int
+      - type: number
+        name: size
+        label: Size
+        subtype: int
+      - type: number
+        name: vsize
+        label: Vsize
+        subtype: int
+      - type: number
+        name: weight
+        label: Weight
+        subtype: int
+      - type: number
+        name: locktime
+        label: Locktime
+        subtype: int
+      - type: list
+        name: vin
+        label: Vin
+        items:
+          type: model
+          models:
+            - object_8oz8g1d0x3
+            - object_k2rc1pg3vr
+            - object_04o6zzf790
+            - object_wux3qqkejk
+            - object_6d519b4cb5
+            - object_v8cwcdm4l7
+            - object_0j5yj19mgp
+            - object_ph85za5qs9
+            - object_v76im43lse
+            - object_vzlpp1hia0
+            - object_eerd2sxox8
+            - object_96ib4ut68b
+            - object_93oqo9cyco
+      - type: list
+        name: vout
+        label: Vout
+        items:
+          type: model
+          models:
+            - object_vquit9lefm
+            - object_cd7x3tsgyo
+            - object_e375lbev3c
+            - object_bp58zb6ozh
+            - object_9urq4mt0zh
+            - object_9c9haqtm35
+            - object_c0uajh50wk
+            - object_t8sh8ncob1
+            - object_x1bng3xpk7
+            - object_wz2tynjq0y
+            - object_ba9k0xvdfu
+            - object_875keibye0
+            - object_p15nn4dksy
+            - object_gyogmbgnu7
+            - object_jxc2bm9lkt
+            - object_vjcm7dgxqj
+            - object_23uwunn9n7
+            - object_0qm16poskc
+            - object_o7p9ib3iwu
+            - object_nx81mwar7n
+            - object_g35in8ck8v
+            - object_k4kn0d27og
+            - object_gftb36wim0
+            - object_0bvcuqnkjv
+            - object_17nqfc922u
+            - object_ujvc4xjl30
+      - type: string
+        name: hex
+        label: Hex
+  object_8wqgeggymp:
+    type: object
+    label: Object 1
+    fields:
+      - type: number
+        name: bcrt1qmpwzkuwsqc9snjvgdt4czhjsnywa5yjdqpxskv
+        label: Bcrt 1 Qmpwzkuwsqc 9 Snjvgdt 4 Czhjsnywa 5 Yjdqpxskv
+        subtype: float
+  object_jw9sbibb5o:
+    type: object
+    label: Object 2
+    fields:
+      - type: number
+        name: bcrt1qqzh2ngh97ru8dfvgma25d6r595wcwqy0cee4cc
+        label: Bcrt 1 Qqzh 2 Ngh 97 Ru 8 Dfvgma 25 D 6 R 595 Wcwqy 0 Cee 4 Cc
+        subtype: int
+  object_04o6zzf790:
+    type: object
+    label: Object 3
+    fields: []
+  object_wux3qqkejk:
+    type: object
+    label: Object 4
+    fields:
+      - type: string
+        name: txid
+        label: Txid
+      - type: number
+        name: vout
+        label: Vout
+        subtype: int
+      - type: object
+        name: scriptSig
+        label: Script Sig
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+      - type: number
+        name: sequence
+        label: Sequence
+        subtype: int
+  object_e375lbev3c:
+    type: object
+    label: Object 5
+    fields: []
+  object_bp58zb6ozh:
+    type: object
+    label: Object 6
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: float
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_8oz8g1d0x3:
+    type: object
+    label: Object 7
+    fields: []
+  object_k2rc1pg3vr:
+    type: object
+    label: Object 8
+    fields:
+      - type: string
+        name: txid
+        label: Txid
+      - type: number
+        name: vout
+        label: Vout
+        subtype: int
+      - type: object
+        name: scriptSig
+        label: Script Sig
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+      - type: number
+        name: sequence
+        label: Sequence
+        subtype: int
+  object_vquit9lefm:
+    type: object
+    label: Object 9
+    fields: []
+  object_cd7x3tsgyo:
+    type: object
+    label: Object 10
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: float
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_6d519b4cb5:
+    type: object
+    label: Object 11
+    fields: []
+  object_v8cwcdm4l7:
+    type: object
+    label: Object 12
+    fields:
+      - type: string
+        name: txid
+        label: Txid
+      - type: number
+        name: vout
+        label: Vout
+        subtype: int
+      - type: object
+        name: scriptSig
+        label: Script Sig
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+      - type: number
+        name: sequence
+        label: Sequence
+        subtype: int
+  object_9c9haqtm35:
+    type: object
+    label: Object 13
+    fields: []
+  object_c0uajh50wk:
+    type: object
+    label: Object 14
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: float
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_0j5yj19mgp:
+    type: object
+    label: Object 15
+    fields: []
+  object_ph85za5qs9:
+    type: object
+    label: Object 16
+    fields:
+      - type: string
+        name: txid
+        label: Txid
+      - type: number
+        name: vout
+        label: Vout
+        subtype: int
+      - type: object
+        name: scriptSig
+        label: Script Sig
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+      - type: number
+        name: sequence
+        label: Sequence
+        subtype: int
+  object_t8sh8ncob1:
+    type: object
+    label: Object 17
+    fields: []
+  object_x1bng3xpk7:
+    type: object
+    label: Object 18
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: float
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_9urq4mt0zh:
+    type: object
+    label: Object 19
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: type
+            label: Type
+  object_v76im43lse:
+    type: object
+    label: Object 20
+    fields:
+      - type: string
+        name: txid
+        label: Txid
+      - type: number
+        name: vout
+        label: Vout
+        subtype: int
+      - type: object
+        name: scriptSig
+        label: Script Sig
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+      - type: number
+        name: sequence
+        label: Sequence
+        subtype: int
+  object_wz2tynjq0y:
+    type: object
+    label: Object 21
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: float
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_vzlpp1hia0:
+    type: object
+    label: Object 22
+    fields:
+      - type: string
+        name: txid
+        label: Txid
+      - type: number
+        name: vout
+        label: Vout
+        subtype: int
+      - type: object
+        name: scriptSig
+        label: Script Sig
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+      - type: number
+        name: sequence
+        label: Sequence
+        subtype: int
+  object_ba9k0xvdfu:
+    type: object
+    label: Object 23
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: float
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_eerd2sxox8:
+    type: object
+    label: Object 24
+    fields:
+      - type: string
+        name: txid
+        label: Txid
+      - type: number
+        name: vout
+        label: Vout
+        subtype: int
+      - type: object
+        name: scriptSig
+        label: Script Sig
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+      - type: number
+        name: sequence
+        label: Sequence
+        subtype: int
+  object_875keibye0:
+    type: object
+    label: Object 25
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: float
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_96ib4ut68b:
+    type: object
+    label: Object 26
+    fields:
+      - type: string
+        name: txid
+        label: Txid
+      - type: number
+        name: vout
+        label: Vout
+        subtype: int
+      - type: object
+        name: scriptSig
+        label: Script Sig
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+      - type: number
+        name: sequence
+        label: Sequence
+        subtype: int
+  object_p15nn4dksy:
+    type: object
+    label: Object 27
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: float
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_gyogmbgnu7:
+    type: object
+    label: Object 28
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: type
+            label: Type
+  object_jxc2bm9lkt:
+    type: object
+    label: Object 29
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_vjcm7dgxqj:
+    type: object
+    label: Object 30
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_23uwunn9n7:
+    type: object
+    label: Object 31
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_0qm16poskc:
+    type: object
+    label: Object 32
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_o7p9ib3iwu:
+    type: object
+    label: Object 33
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: type
+            label: Type
+  object_nx81mwar7n:
+    type: object
+    label: Object 34
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_g35in8ck8v:
+    type: object
+    label: Object 35
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_k4kn0d27og:
+    type: object
+    label: Object 36
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: type
+            label: Type
+  object_gftb36wim0:
+    type: object
+    label: Object 37
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_0bvcuqnkjv:
+    type: object
+    label: Object 38
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_17nqfc922u:
+    type: object
+    label: Object 39
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: int
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
+  object_93oqo9cyco:
+    type: object
+    label: Object 40
+    fields:
+      - type: string
+        name: txid
+        label: Txid
+      - type: number
+        name: vout
+        label: Vout
+        subtype: int
+      - type: object
+        name: scriptSig
+        label: Script Sig
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+      - type: number
+        name: sequence
+        label: Sequence
+        subtype: int
+  object_ujvc4xjl30:
+    type: object
+    label: Object 41
+    fields:
+      - type: number
+        name: value
+        label: Value
+        subtype: float
+      - type: number
+        name: 'n'
+        label: 'N'
+        subtype: int
+      - type: object
+        name: scriptPubKey
+        label: Script Pub Key
+        fields:
+          - type: string
+            name: asm
+            label: Asm
+          - type: string
+            name: hex
+            label: Hex
+          - type: string
+            name: address
+            label: Address
+          - type: string
+            name: type
+            label: Type
