@@ -131,7 +131,7 @@ CTxMemPool MakeMempool(FuzzedDataProvider& fuzzed_data_provider, const NodeConte
     return CTxMemPool{mempool_opts};
 }
 
-FUZZ_TARGET_INIT(tx_pool_standard, initialize_tx_pool)
+FUZZ_TARGET(tx_pool_standard, .init = initialize_tx_pool)
 {
     FuzzedDataProvider fuzzed_data_provider(buffer.data(), buffer.size());
     const auto& node = g_setup->m_node;
@@ -227,7 +227,7 @@ FUZZ_TARGET_INIT(tx_pool_standard, initialize_tx_pool)
         }
         if (fuzzed_data_provider.ConsumeBool()) {
             const auto& txid = fuzzed_data_provider.ConsumeBool() ?
-                                   tx->GetHash() :
+                                   tx->GetHash().ToUint256() :
                                    PickValue(fuzzed_data_provider, outpoints_rbf).hash;
             const auto delta = fuzzed_data_provider.ConsumeIntegralInRange<CAmount>(-50 * COIN, +50 * COIN);
             tx_pool.PrioritiseTransaction(txid, delta);
@@ -307,7 +307,7 @@ FUZZ_TARGET_INIT(tx_pool_standard, initialize_tx_pool)
     Finish(fuzzed_data_provider, tx_pool, chainstate);
 }
 
-FUZZ_TARGET_INIT(tx_pool, initialize_tx_pool)
+FUZZ_TARGET(tx_pool, .init = initialize_tx_pool)
 {
     FuzzedDataProvider fuzzed_data_provider(buffer.data(), buffer.size());
     const auto& node = g_setup->m_node;
@@ -343,8 +343,8 @@ FUZZ_TARGET_INIT(tx_pool, initialize_tx_pool)
             tx_pool.RollingFeeUpdate();
         }
         if (fuzzed_data_provider.ConsumeBool()) {
-            const auto& txid = fuzzed_data_provider.ConsumeBool() ?
-                                   mut_tx.GetHash() :
+            const auto txid = fuzzed_data_provider.ConsumeBool() ?
+                                   mut_tx.GetHash().ToUint256() :
                                    PickValue(fuzzed_data_provider, txids);
             const auto delta = fuzzed_data_provider.ConsumeIntegralInRange<CAmount>(-50 * COIN, +50 * COIN);
             tx_pool.PrioritiseTransaction(txid, delta);

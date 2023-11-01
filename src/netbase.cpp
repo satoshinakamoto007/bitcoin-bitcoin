@@ -21,14 +21,6 @@
 #include <limits>
 #include <memory>
 
-#ifndef WIN32
-#include <fcntl.h>
-#endif
-
-#ifdef USE_POLL
-#include <poll.h>
-#endif
-
 // Settings
 static GlobalMutex g_proxyinfo_mutex;
 static Proxy proxyInfo[NET_MAX] GUARDED_BY(g_proxyinfo_mutex);
@@ -39,6 +31,8 @@ bool fNameLookup = DEFAULT_NAME_LOOKUP;
 // Need ample time for negotiation for very slow proxies such as Tor
 std::chrono::milliseconds g_socks5_recv_timeout = 20s;
 static std::atomic<bool> interruptSocks5Recv(false);
+
+ReachableNets g_reachable_nets;
 
 std::vector<CNetAddr> WrappedGetAddrInfo(const std::string& name, bool allow_lookup)
 {
@@ -522,10 +516,6 @@ bool ConnectSocketDirectly(const CService &addrConnect, const Sock& sock, int nT
     // Create a sockaddr from the specified service.
     struct sockaddr_storage sockaddr;
     socklen_t len = sizeof(sockaddr);
-    if (sock.Get() == INVALID_SOCKET) {
-        LogPrintf("Cannot connect to %s: invalid socket\n", addrConnect.ToStringAddrPort());
-        return false;
-    }
     if (!addrConnect.GetSockAddr((struct sockaddr*)&sockaddr, &len)) {
         LogPrintf("Cannot connect to %s: unsupported network\n", addrConnect.ToStringAddrPort());
         return false;
@@ -655,39 +645,40 @@ bool ConnectThroughProxy(const Proxy& proxy, const std::string& strDest, uint16_
     return true;
 }
 
-bool LookupSubNet(const std::string& subnet_str, CSubNet& subnet_out)
+CSubNet LookupSubNet(const std::string& subnet_str)
 {
+    CSubNet subnet;
+    assert(!subnet.IsValid());
     if (!ContainsNoNUL(subnet_str)) {
-        return false;
+        return subnet;
     }
 
     const size_t slash_pos{subnet_str.find_last_of('/')};
     const std::string str_addr{subnet_str.substr(0, slash_pos)};
-    const std::optional<CNetAddr> addr{LookupHost(str_addr, /*fAllowLookup=*/false)};
+    std::optional<CNetAddr> addr{LookupHost(str_addr, /*fAllowLookup=*/false)};
 
     if (addr.has_value()) {
+        addr = static_cast<CNetAddr>(MaybeFlipIPv6toCJDNS(CService{addr.value(), /*port=*/0}));
         if (slash_pos != subnet_str.npos) {
             const std::string netmask_str{subnet_str.substr(slash_pos + 1)};
             uint8_t netmask;
             if (ParseUInt8(netmask_str, &netmask)) {
                 // Valid number; assume CIDR variable-length subnet masking.
-                subnet_out = CSubNet{addr.value(), netmask};
-                return subnet_out.IsValid();
+                subnet = CSubNet{addr.value(), netmask};
             } else {
                 // Invalid number; try full netmask syntax. Never allow lookup for netmask.
                 const std::optional<CNetAddr> full_netmask{LookupHost(netmask_str, /*fAllowLookup=*/false)};
                 if (full_netmask.has_value()) {
-                    subnet_out = CSubNet{addr.value(), full_netmask.value()};
-                    return subnet_out.IsValid();
+                    subnet = CSubNet{addr.value(), full_netmask.value()};
                 }
             }
         } else {
             // Single IP subnet (<ipv4>/32 or <ipv6>/128).
-            subnet_out = CSubNet{addr.value()};
-            return subnet_out.IsValid();
+            subnet = CSubNet{addr.value()};
         }
     }
-    return false;
+
+    return subnet;
 }
 
 void InterruptSocks5(bool interrupt)
@@ -783,4 +774,13 @@ bool IsBadPort(uint16_t port)
         return true;
     }
     return false;
+}
+
+CService MaybeFlipIPv6toCJDNS(const CService& service)
+{
+    CService ret{service};
+    if (ret.IsIPv6() && ret.HasCJDNSPrefix() && g_reachable_nets.Contains(NET_CJDNS)) {
+        ret.m_net = NET_CJDNS;
+    }
+    return ret;
 }

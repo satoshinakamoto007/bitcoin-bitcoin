@@ -7,7 +7,9 @@
 #include <logging.h>
 #include <outputtype.h>
 #include <script/descriptor.h>
+#include <script/script.h>
 #include <script/sign.h>
+#include <script/solver.h>
 #include <util/bip32.h>
 #include <util/strencodings.h>
 #include <util/string.h>
@@ -757,12 +759,12 @@ bool LegacyScriptPubKeyMan::AddKeyPubKeyWithDB(WalletBatch& batch, const CKey& s
         RemoveWatchOnly(script);
     }
 
+    m_storage.UnsetBlankWalletFlag(batch);
     if (!m_storage.HasEncryptionKeys()) {
         return batch.WriteKey(pubkey,
                                                  secret.GetPrivKey(),
                                                  mapKeyMetadata[pubkey.GetID()]);
     }
-    m_storage.UnsetBlankWalletFlag(batch);
     return true;
 }
 
@@ -1714,8 +1716,23 @@ std::unordered_set<CScript, SaltedSipHasher> LegacyScriptPubKeyMan::GetScriptPub
     }
 
     // All watchonly scripts are raw
-    spks.insert(setWatchOnly.begin(), setWatchOnly.end());
+    for (const CScript& script : setWatchOnly) {
+        // As the legacy wallet allowed to import any script, we need to verify the validity here.
+        // LegacyScriptPubKeyMan::IsMine() return 'ISMINE_NO' for invalid or not watched scripts (IsMineResult::INVALID or IsMineResult::NO).
+        // e.g. a "sh(sh(pkh()))" which legacy wallets allowed to import!.
+        if (IsMine(script) != ISMINE_NO) spks.insert(script);
+    }
 
+    return spks;
+}
+
+std::unordered_set<CScript, SaltedSipHasher> LegacyScriptPubKeyMan::GetNotMineScriptPubKeys() const
+{
+    LOCK(cs_KeyStore);
+    std::unordered_set<CScript, SaltedSipHasher> spks;
+    for (const CScript& script : setWatchOnly) {
+        if (IsMine(script) == ISMINE_NO) spks.insert(script);
+    }
     return spks;
 }
 
@@ -1885,7 +1902,7 @@ std::optional<MigrationData> LegacyScriptPubKeyMan::MigrateToDescriptor()
         std::string desc_str;
         bool watchonly = !desc->ToPrivateString(*this, desc_str);
         if (watchonly && !m_storage.IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
-            out.watch_descs.push_back({desc->ToString(), creation_time});
+            out.watch_descs.emplace_back(desc->ToString(), creation_time);
 
             // Get the scriptPubKeys without writing this to the wallet
             FlatSigningProvider provider;
@@ -1954,14 +1971,14 @@ std::optional<MigrationData> LegacyScriptPubKeyMan::MigrateToDescriptor()
             assert(IsMine(sh_spk) == ISMINE_NO && IsMine(witprog) == ISMINE_NO && IsMine(sh_wsh_spk) == ISMINE_NO);
 
             std::unique_ptr<Descriptor> sh_desc = InferDescriptor(sh_spk, *GetSolvingProvider(sh_spk));
-            out.solvable_descs.push_back({sh_desc->ToString(), creation_time});
+            out.solvable_descs.emplace_back(sh_desc->ToString(), creation_time);
 
             const auto desc = InferDescriptor(witprog, *this);
             if (desc->IsSolvable()) {
                 std::unique_ptr<Descriptor> wsh_desc = InferDescriptor(witprog, *GetSolvingProvider(witprog));
-                out.solvable_descs.push_back({wsh_desc->ToString(), creation_time});
+                out.solvable_descs.emplace_back(wsh_desc->ToString(), creation_time);
                 std::unique_ptr<Descriptor> sh_wsh_desc = InferDescriptor(sh_wsh_spk, *GetSolvingProvider(sh_wsh_spk));
-                out.solvable_descs.push_back({sh_wsh_desc->ToString(), creation_time});
+                out.solvable_descs.emplace_back(sh_wsh_desc->ToString(), creation_time);
             }
         }
     }
@@ -2584,10 +2601,7 @@ std::unique_ptr<CKeyMetadata> DescriptorScriptPubKeyMan::GetMetadata(const CTxDe
 uint256 DescriptorScriptPubKeyMan::GetID() const
 {
     LOCK(cs_desc_man);
-    std::string desc_str = m_wallet_descriptor.descriptor->ToString();
-    uint256 id;
-    CSHA256().Write((unsigned char*)desc_str.data(), desc_str.size()).Finalize(id.begin());
-    return id;
+    return DescriptorID(*m_wallet_descriptor.descriptor);
 }
 
 void DescriptorScriptPubKeyMan::SetCache(const DescriptorCache& cache)
